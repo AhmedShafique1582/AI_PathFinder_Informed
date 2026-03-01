@@ -16,9 +16,12 @@ PATH_COLOR     = "#a855f7"
 GRID_COLOR     = "#525252"
 FLASH_COLOR    = "#ffffff"
 
-ALGORITHM = "A_STAR"
-HEURISTIC = "MANHATTAN"
+#ALGORITHM = "A_STAR"
+ALGORITHM = "GREEDY_SEARCH"
 
+HEURISTIC = "MANHATTAN"
+#HEURISTIC = "EUCLIDEAN"
+#HEURISTIC = "DIAGONAL"
 
 class Node:
     def __init__(self, row, col, width, total_rows):
@@ -110,7 +113,6 @@ def draw(win, grid, rows, width, metrics, status):
 
 
 def instant_scatter(grid, rows, start, goal):
-    """Instantly place scattered walls with no animation."""
     sp, gp = start.get_pos(), goal.get_pos()
     for i in range(rows):
         for j in range(rows):
@@ -126,7 +128,6 @@ def instant_scatter(grid, rows, start, goal):
 
 
 def spawn_dynamic_walls(grid, rows, start, goal, stop_event, interval=0.3):
-    """Background thread: randomly spawns 1-3 new walls while algo runs."""
     while not stop_event.is_set():
         time.sleep(interval)
         if stop_event.is_set():
@@ -270,8 +271,7 @@ def main(win, width):
                 run = False
 
             if event.type == pygame.KEYDOWN:
-
-                # SPACE — run pathfinding with live wall spawning
+                #SPACE-BUTTON
                 if event.key == pygame.K_SPACE and not path_found:
                     for row in grid:
                         for node in row:
